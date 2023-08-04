@@ -31,4 +31,17 @@ Props:
     Props are immuatble. They cannot be changed and are read only.
     If you need to mutate props you actually need state.
     React follows one way data flow. Data can flow only from top to bottom. Angular has two-way data flow.
+
+Foreach function does not work in place of map because foreach does not return a new array. And an array of JSX 
+elements is required which can be rendered.
+If condition and For loop cannot be used inside javascript mode. Instead use ternary, short circuting and map.
+
+You can also do multiple returns from the same function using if else statements.
+
+Instead of passing props directly into the functional component, its a good idea to pass props using destructuring.
+
+React Fragment
+Instead of wrapping a bunch of components inside a div which will then mess up the dom tree. We can wrap the 
+components inside a fragment. A fragment can be created by using <React.Fragment></React.Fragment> tag or <></>
+an empty tag.
     

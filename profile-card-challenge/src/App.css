@@ -40,26 +40,11 @@ body {
 }
 
 .skill {
-  border-radius: 4px;
+  border-radius: 5px;
   display: inline-block;
   margin-right: 20px;
+  font-size: 14px;
   font-weight: 500;
   margin-bottom : 5px;
-  padding : 1px 5px;
-}
-
-.orangeBack {
-  background-color: orange;
-}
-
-.greenBack {
-  background-color: green;
-}
-
-.blueBack {
-  background-color: blue;
-}
-
-.limegreenBack {
-  background-color: limegreen;
+  padding : 1px 6px;
 }
