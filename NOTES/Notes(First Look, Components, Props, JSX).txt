@@ -24,3 +24,11 @@ Separation of Concerns:
     were all in separate files. 
     In react, separation of concerns have changed to one component per file. A component can have a mix of 
     HTML(JSX), Javscript and CSS but components are still separated across files.
+
+Props:
+    Props are used to transfer data from parent to child components.
+    They are an essential tool to configure and customize components.
+    Props are immuatble. They cannot be changed and are read only.
+    If you need to mutate props you actually need state.
+    React follows one way data flow. Data can flow only from top to bottom. Angular has two-way data flow.
+    
