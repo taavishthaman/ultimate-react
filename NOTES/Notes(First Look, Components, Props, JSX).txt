@@ -1,0 +1,26 @@
+Why do we even need frontend frameworks:
+    1. Keeping user interfaces in sync with data is a lot of hard work, frontend frameworks take this hardwork away from 
+        developers.
+    2. Frontend frameworks enforce a correct way of structuring and writing code.
+    3. They give developers and teams a consistent way of building frontend applications.
+
+    React is an extremely popular, declarative, component-based, state-driven javascript library for building user-interfaces,
+    created by facebook.
+
+    React is a library and not a framework because its only the view layer. We need multiple external libraries to build a 
+    complete application. Next.js and Remix on the other hand are some frameworks written on top of react.
+
+Components:
+
+    Components are small pieces of UI with their own data, logic and appearance. 
+    We build complex UI's by building multiple components and combining them. 
+    Components can be resued, nested inside each other, and pass data between them.
+
+JSX:
+    Declarative syntax to describe how the components look and behave.
+
+Separation of Concerns:
+    In the tradition vanilla js, separation of concerns were one technology per file. HTML, CSS and Javascript
+    were all in separate files. 
+    In react, separation of concerns have changed to one component per file. A component can have a mix of 
+    HTML(JSX), Javscript and CSS but components are still separated across files.
