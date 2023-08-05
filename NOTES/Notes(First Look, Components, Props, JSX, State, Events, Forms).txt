@@ -45,3 +45,28 @@ Instead of wrapping a bunch of components inside a div which will then mess up t
 components inside a fragment. A fragment can be created by using <React.Fragment></React.Fragment> tag or <></>
 an empty tag.
     
+Events and States
+
+In event methods like onClick DO NOT call a function directly. Instead pass a function value otherwise the function will
+be executed immediately upon loading the app.
+
+Data that the component can hold over time, necessary for the information that it needs to remember throughout 
+the app's lifecycle.
+It is the component's memory.
+
+Component State : Single local component variable. (Piece of State)
+Updating component state triggers React to re-render the component.
+
+useState() is a react hook. Hooks can only be called on the top level of the function.
+useState() can also not be called in any other control flow. They must be called in isolation at the top level
+of the function.
+
+State is preserved throughout component rendering/re-rendering unless component completely disappears from
+the view which is called unmounting. When the state changes, the component re-renders.
+
+If we want to update state based on the current state. Pass in a callback function with current state as the argument
+instead of directly changing the state inside the setState function.
+
+Each component has and manages its own state. State is isolated inside each component. With state we view UI as
+the reflection of data changing over time.
+
