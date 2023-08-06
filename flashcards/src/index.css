@@ -1,0 +1,35 @@
+* {
+  margin : 0;
+  padding : 0;
+  box-sizing: border-box;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 15px;
+  column-gap: 15px;
+  margin-top : 15px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.flashcard {
+  display: inline-block;
+  height: 250px;
+  width: '100%';
+  border-radius: 10px;
+  text-align: center;
+  padding-left: 40px;
+  padding-right: 40px;
+  cursor: pointer;
+  border: 1px solid #e7e7e7;
+  background-color: #f7f7f7;
+  padding-top : 100px;
+}
+
+.selected {
+  border: 1px solid #e03131;
+  background-color: #e03131;
+}
