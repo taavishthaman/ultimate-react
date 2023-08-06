@@ -15,13 +15,13 @@ function Counter() {
   const [count, setCount] = useState(0);
   const [date, setDate] = useState(new Date());
 
-  function decreaseStep() {
-    setStep(s => s-1);
-  }
+  // function decreaseStep() {
+  //   setStep(s => s-1);
+  // }
 
-  function increaseStep() {
-    setStep(s => s+1);
-  }
+  // function increaseStep() {
+  //   setStep(s => s+1);
+  // }
 
   function decreaseCount() {
     setCount(c => c-step);
@@ -31,15 +31,23 @@ function Counter() {
     setCount(c => c+step);
   }
 
+  function changeStep(s) {
+    setStep(s);
+  }
+
+  function setCountValue(c) {
+    setCount(c);
+  }
+
   return <>
     <div>
-      <button className='btn' onClick={decreaseStep}>-</button>
-      <p className='text'>Step : {step}</p>
-      <button className='btn' onClick={increaseStep}>+</button>
+      <input type='range' min={0} max={10} value={step} onChange={(e) => changeStep(Number(e.target.value))}></input>
+      <span>{step}</span>
     </div>
     <div>
       <button className='btn' onClick={decreaseCount}>-</button>
-      <p className='text'>Count : {count}</p>
+      {/* <p className='text'>Count : {count}</p> */}
+      <input value={count} type="text" onChange={e => setCountValue(Number(e.target.value))}></input>
       <button className='btn' onClick={increaseCount}>+</button>
     </div>
     <div className='date-text'>
