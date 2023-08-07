@@ -54,26 +54,39 @@ Data that the component can hold over time, necessary for the information that i
 the app's lifecycle.
 It is the component's memory.
 
-Component State : Single local component variable. (Piece of State)
-Updating component state triggers React to re-render the component.
+Component State : 
+    Single local component variable. (Piece of State)
+    Updating component state triggers React to re-render the component.
 
-useState() is a react hook. Hooks can only be called on the top level of the function.
-useState() can also not be called in any other control flow. They must be called in isolation at the top level
-of the function.
+    useState() is a react hook. Hooks can only be called on the top level of the function.
+    useState() can also not be called in any other control flow. They must be called in isolation at the top level
+    of the function.
 
-State is preserved throughout component rendering/re-rendering unless component completely disappears from
-the view which is called unmounting. When the state changes, the component re-renders.
+    State is preserved throughout component rendering/re-rendering unless component completely disappears from
+    the view which is called unmounting. When the state changes, the component re-renders.
 
-If we want to update state based on the current state. Pass in a callback function with current state as the argument
-instead of directly changing the state inside the setState function.
+    If we want to update state based on the current state. Pass in a callback function with current state as the argument
+    instead of directly changing the state inside the setState function.
 
-Each component has and manages its own state. State is isolated inside each component. With state we view UI as
-the reflection of data changing over time.
+    Each component has and manages its own state. State is isolated inside each component. With state we view UI as
+    the reflection of data changing over time.
 
-Controlled Elements: Controlled Elements are elements related to a form like input and submit button and how we handle
-the values related to them.
+Controlled Elements: 
+    Controlled Elements are elements related to a form like input and submit button and how we handle
+    the values related to them.
 
 State vs Props
-State is owned by the component. Props is owned by the parent. A change in props causes the component to rerender.
-And similarly a change in state also causes the component to rerender. 
+    State is owned by the component. Props is owned by the parent. A change in props causes the component to rerender.
+    And similarly a change in state also causes the component to rerender. 
 
+In React you are not supposed to mutate the original state and instead return a new state everytime you want to 
+change the state.
+
+If one or two sibling components need to use a state, we should lift the state to the common parent component
+and then pass it down to the relevant children.
+
+Derived state is the state that is computed from an existing piece of state or from props. If you already have
+the data to compute a value, compute it in that component using constant variables. Don't use more state variables.
+
+Everytime you need to do operartion on items array, don't mutate the original array and instead create a copy using 
+slice.
