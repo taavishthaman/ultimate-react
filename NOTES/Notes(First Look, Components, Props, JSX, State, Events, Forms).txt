@@ -90,3 +90,14 @@ the data to compute a value, compute it in that component using constant variabl
 
 Everytime you need to do operartion on items array, don't mutate the original array and instead create a copy using 
 slice.
+
+children Props:
+
+children props exist by default for each component. children props is used to build resusable components and whatever
+is passed inside the component definition will be available in children props inside that component.
+
+<Component>Hello, This value is availabe in children props.</Component>
+
+function Component({children}) {
+    console.log(children); //Hello, This value is availabe in children props.
+}
