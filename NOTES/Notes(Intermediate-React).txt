@@ -1,0 +1,25 @@
+How to create components:
+    Components should be neither too large and nor too small. One component should not have too many responsibilities.
+    A component should not have very complex JSX or too many props.
+
+    4 criterias to create components are:
+    1. Logical separation of content.
+    2. Reusability.
+    3. Responsibilities and Complexity.
+    4. Personal Coding style.
+
+Components naturally fall in 3 categories
+
+    1. Stateless/Presentational Components : Do not have their own states. Can have props. Only used for presenting data.
+    2. Stateful Components : Have state and can be reusable.
+    3. Structural Components : Pages, layouts or screens of app. Can be huge and resusable.
+
+Prop Drilling:
+    Prop drilling is when you require some data in a very deeply nested component and you have to pass that data
+    throught props in all its ancestor components.
+
+Component Composition:
+    Combining different components using the children prop (or explicitly defined props).
+    With component composition we can:
+    1. Create highly reusable and flexible components.
+    2. Fix prop drilling.
