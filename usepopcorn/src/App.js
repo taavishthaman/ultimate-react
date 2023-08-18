@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useEffect} from "react";
 
 const tempMovieData = [
   {
@@ -50,10 +51,44 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
+const KEY = '720f6c3b';
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  // 720f6c3b
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [err, setErr] = useState('');
+  const query = "ssdedededs";
+
+  //Only runs on mount
+  useEffect(function() {
+    async function fetchMovies() {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
+        if(!res.ok) throw new Error('Something went wrong with fetching movies.')
+
+        const data = await res.json();
+        if(data.Response === "False") throw new Error('Movie not found.')
+        
+        setMovies(data.Search);
+        setIsLoading(false);
+      } catch (err) {
+        setErr(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchMovies();
+  }, [])
+
+  
+
+  // fetch(`https://lal10api.lal10.com/v2/search-by-filters?&title=&filterBody=%7B%22Sub+Category+Name%22:[%22Floor+Coverings%22]%7D&page=0&perPage=200`)
+  // .then(res => res.json())
+  // .then(data => setMovies(data.hits))
   return (
     <>
       <NavBar>
@@ -62,7 +97,10 @@ export default function App() {
       </NavBar>
       <Main>
         <Box>
-          <MovieList movies={movies}/>
+          {/* {isLoading ? <Loader/> : <MovieList movies={movies}/>} */}
+          {isLoading && <Loader/>}
+          {!isLoading && !err && <MovieList movies={movies}/>}
+          {err && <ErrorMessage message={err} />}
         </Box>
         <Box>
           <WatchedSummary watched = {watched}/>
@@ -78,6 +116,15 @@ export default function App() {
   );
 }
 
+function Loader() {
+  return <p className="loader">Loading...</p>
+}
+
+function ErrorMessage({message}) {
+  return <p className="error">
+    <span>{message}</span>
+  </p>
+}
 
 function NavBar({children}) {
   return <nav className="nav-bar">

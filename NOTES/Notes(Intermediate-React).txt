@@ -159,3 +159,29 @@ Event propagation and delegation:
     Synthetic Events:
     Synthetic Events are react wrappers around native DOM events. Synthetic events bubble up same as the native DOM
     events.
+
+
+Component Lifecycle
+
+    1. Mount/Initial Render : Component instance is rendered for the first time. Fresh state and props are created.
+    2. Re-Render : Component is re-rendered when the state changes, props change, parent re-renders or context changes.
+    3. Unmount : Component instance is destroyed and removed. State and Props are destroyed.
+
+
+    Never set state in the top level react logic as that will create an infinite loop. Because setState will cause
+    the component to re-render which will again call setState which will again re-render and so on and so forth.
+
+
+UseEffect Hook:
+    useEffect hook runs on mount. Using the use effect will run after the component has finished rendering.
+
+Side Effects is when a react component interacts with the world that is outside that comnponent like fetching data.
+In react components Side Effects can be written in either event handlers or effects(like useEffect).
+
+When dealing with API data, always handle errors using try, catch and finally and also create an error message for
+the situation when API returns no data.
+
+We can change the default behavior of useEffect hook of rendering on component mount by passing in arguments to 
+the dependency array. Whenever any value inside the dependency array changes, the effect fires again.
+
+Effects run after the browser has painted the component on the screen. 
