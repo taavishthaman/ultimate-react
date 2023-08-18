@@ -23,3 +23,139 @@ Component Composition:
     With component composition we can:
     1. Create highly reusable and flexible components.
     2. Fix prop drilling.
+
+Reusable Components:
+
+    When creating components, build them as you would build an API or a npm package. Use as many user defined props 
+    as you can.
+
+
+React component, component instance and elements.
+
+React component is the blueprint for creating a component instance which has all the state and occupoes some memory.
+Internally each component creates react elements which are created by using React.createElement('h1') syntax. This
+element is returned buy component instance which is then finally converted to DOM elements and is rendered on the
+screen.
+
+Rendering a component involves 4 phases:
+    1. Render is Triggered: 
+        There are two situations where render might trigger. Initial rendering and statue update.
+
+    2. The Render Phase:
+        During the initial render the component tree is converted to a react element tree. This react element tree is
+        called the virtual DOM. During a state change in one of the components which initiates the rerender, that node
+        inside the virtual DOM and all its children are re-rendered.
+
+        React creates something called a Fiber Tree which is a multilevel linked list representation of the virtual DOM.
+        It contains all the actual data about the components. Whenever a re-render occurs the previous fiber tree is 
+        reconcilled + diffed with the new Virtual DOM to create a new Fiber Tree called workInProgress Treewhich  will be 
+        used to update the state. The updated fiber tree is then used to create a list of effects (which is a list of DOM updates) 
+        which will be used in the commit phase.
+
+    3. The Commit Phase:
+        In the commit phase the ReactDOM library looks at the list of effects and applies the changes to the DOM which 
+        in turn is then repainted by the browser. The commit phase cannot be asynchronous and has to be done all at
+        once. ReactDOM is a so called rendered like ReactNative which writes to the DOM, React does not write to the 
+        DOM, ReactDOM does. That's why we need to import both when we are writing React Apps.
+
+    4. Browser Repaint:
+        Done by browser, updates the visual elements on the screen.
+
+
+Diffing Algorithm:
+    Diffing is the process of comparing elements step by step based on their position in the tree.
+
+    Diffing uses 2 fundamentals rules:
+
+    1. Two elements of different types will produce different trees.
+    2. Elements with a stable key prop stay the same across renders.
+
+    There are 2 different cases when diffing:
+    1. At the same position there are 2 different elements between renders.
+    2. At the same poition, there is same element between 2 renders.
+
+    In the first case, the entire sub-tree is no longer valid. Old components are destroyed and removed from the DOM 
+    including state. Tree might be rebuilt if children stayed the same (state is reset).
+
+    In the second case element will be kept (as well as the child elements including state) across renders.
+    New props/attributes are passed if they are changed between renders. Sometimes this is not what we want 
+    then we can use Key prop.
+
+Key Prop:
+    Special prop used to tell the diffing element that an element is unique.
+
+    1. Provide keys when using lists.
+        The unique key prop tells the diffing algorithm that this component need not be destroyed and just can be 
+        reused in the next render so that is good for performance and can make a great impact when working with
+        large lists.
+
+    2. Key prop to reset state.
+        If the component is same across two renders but its props change, the state will still be preserved according
+        to the rules of the diffing algorithm. But if we pass in a unique key, it will tell react that this component
+        needs to be destroyed and recreated.
+
+Render Logic:
+
+    There are two kinds of component logic:
+    1. Render Logic : Code that lives in the top level of component fucntion. Participates in dexcribing how component
+        view looks like and executes everytime the component renders.
+
+    2. Event Handler Functions : Executed as a consequence of the event that the handler is listening for.
+
+    Side Effects : When a function mutates a variable that lives outside of its scope then its a side effect.
+
+    Pure vs Impure Functions :
+    
+    Pure functions do not mutate any outside data and have a predicatble output. 
+    Eg. function radius(r) {
+        return PI * r * r;
+    }
+    
+    On the other hand impure functions can mutate outside data or may have unpredictable output.
+
+    const circle = {};
+
+    function radius(r) {
+        circle.area = PI * r * r;
+    }
+
+    OR
+
+    function timedRadius(r) {
+        const date = new Date();
+        return PI * r * r * date.now();
+    }
+
+    Render Logic must not be impure. When it comes to render logic components must be pure. Do not write http requests,
+    timers etc in render logic. Do not use DOM API's. Updating state in render logic will create an infinite loop.
+
+    Create side effects either in event handler functions or a special hook called useEffect.
+
+Batching state updates:
+
+    Imagine an event handler function which changes multiple state variables. These variables will not be updated and
+    rendered one by one but will be rendered at once in a batch. This is goof for performance optimisation as there
+    are no wasted renders.
+
+    React does not give us the updated value of the state immediately. It only gives us that value once the re-render
+    has occured. So doing a console.log() immediately after updating a state variable will show the stale state.
+
+
+Event propagation and delegation:
+    DOM
+    When an event occurs, an event object is created in the root of the DOM tree. The this event object travels
+    down to the target element during the capturing phase. After reaching the target element the event starts
+    bubbling up during the bubbling up phase and the ancestor elements can capture those events.
+
+    Event delegation : Add just one handler function in a common parent element instead of adding event listener
+    to every single element.
+
+    Event handling behind the scenes:
+    
+    React registers events inside the root element instead of the element in which onClick is added and it handles
+    all the events inside the root element behind the scenes. So react perform event delegation in the background
+    which is good for optimal performance.
+
+    Synthetic Events:
+    Synthetic Events are react wrappers around native DOM events. Synthetic events bubble up same as the native DOM
+    events.
