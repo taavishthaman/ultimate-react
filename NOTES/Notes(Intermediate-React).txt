@@ -179,9 +179,23 @@ Side Effects is when a react component interacts with the world that is outside 
 In react components Side Effects can be written in either event handlers or effects(like useEffect).
 
 When dealing with API data, always handle errors using try, catch and finally and also create an error message for
-the situation when API returns no data.
+the situation when API returns no data. Do this by creating multiple javascript mode blocks and specifying conditions
+for each situation.
 
 We can change the default behavior of useEffect hook of rendering on component mount by passing in arguments to 
 the dependency array. Whenever any value inside the dependency array changes, the effect fires again.
 
 Effects run after the browser has painted the component on the screen. 
+
+The dependancy array makes the component sync with whatever state variables are in the dependancy array.
+
+Cleanup function is an optional function that we can return from an effect. Cleanup function runs on two occasions:
+
+1. Before the effect is executed again.
+2. After the component is unmounted. 
+
+
+Fixing Race Condition in search:
+Use AbortController to fix bad search (Race condition) and also if AbortError occurs, don't display that error.
+
+If you want to do classical DOM manipulation, do it in Effects.
