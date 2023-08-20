@@ -1,8 +1,53 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
+import {useEffect} from "react";
 import StarRating from "./StarRating"
-import { useMovies } from "./useMovies";
-import { useLocalStorageState } from "./useLocalStorageState";
-import { useKey } from "./useKey";
+
+const tempMovieData = [
+  {
+    imdbID: "tt1375666",
+    Title: "Inception",
+    Year: "2010",
+    Poster:
+      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+  },
+  {
+    imdbID: "tt0133093",
+    Title: "The Matrix",
+    Year: "1999",
+    Poster:
+      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
+  },
+  {
+    imdbID: "tt6751668",
+    Title: "Parasite",
+    Year: "2019",
+    Poster:
+      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
+  },
+];
+
+const tempWatchedData = [
+  {
+    imdbID: "tt1375666",
+    Title: "Inception",
+    Year: "2010",
+    Poster:
+      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+    runtime: 148,
+    imdbRating: 8.8,
+    userRating: 10,
+  },
+  {
+    imdbID: "tt0088763",
+    Title: "Back to the Future",
+    Year: "1985",
+    Poster:
+      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+    runtime: 116,
+    imdbRating: 8.5,
+    userRating: 9,
+  },
+];
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -10,18 +55,27 @@ const average = (arr) =>
 const KEY = '720f6c3b';
 
 export default function App() {
+  // 720f6c3b
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [err, setErr] = useState('');
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
-  const {movies, isLoading, err} = useMovies(query);
+  //Experimneting with Effects
+  // useEffect(() => {
+  //   console.log('Synchronised with query state!');
+  // }, [query])
 
-  const [watched, setWatched] = useLocalStorageState([], 'watched');
+  // useEffect(() => {
+  //   console.log('After First Render!');
+  // }, [])
 
-  // const [watched, setWatched] = useState([]);
-  // const [watched, setWatched] = useState(() => {
-  //   const storedValue = localStorage.getItem("watched");
-  //   return JSON.parse(storedValue)
-  // });
+  // useEffect(() => {
+  //   console.log('After Every Render!')
+  // })
+  // console.log('During Render!');
 
   function handleSelectMovie(id) {
     setSelectedId(selectedId => id === selectedId ? null : id);
@@ -33,18 +87,49 @@ export default function App() {
 
   function handleAddWatched(movie) {
     setWatched(watched => [...watched, movie]);
-    // localStorage.setItem('watched', JSON.stringify([...watched, movie]));
   }
 
   function handleDeleteWatched(id) {
     setWatched(watched => watched.filter(movie => movie.imdbID !== id))
   }
 
-  // useEffect(() => {
-  //   localStorage.setItem('watched', JSON.stringify(watched));
-  // }, [watched])
+  useEffect(function() {
+    const controller = new AbortController();
 
-  
+    async function fetchMovies() {
+      try {
+        setIsLoading(true);
+        setErr('');
+        const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`, {signal: controller.signal});
+        if(!res.ok) throw new Error('Something went wrong with fetching movies.')
+
+        const data = await res.json();
+        if(data.Response === "False") throw new Error('Movie not found.')
+        
+        setMovies(data.Search);
+        setErr("");
+      } catch (err) {
+        if(err.name !== "AbortError") {
+          setErr(err.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if(query.length < 3) {
+      setMovies([]);
+      setErr('');
+      return;
+    }
+    handleCloseMovie()
+    fetchMovies();
+
+    return function() {
+      //Just before the new key is pressed, this function executes and aborts the current fetch request
+      controller.abort();
+    }
+  }, [query])
 
   return (
     <>
@@ -54,6 +139,7 @@ export default function App() {
       </NavBar>
       <Main>
         <Box>
+          {/* {isLoading ? <Loader/> : <MovieList movies={movies}/>} */}
           {isLoading && <Loader/>}
           {!isLoading && !err && <MovieList movies={movies} onSelectMovie={handleSelectMovie}/>}
           {err && <ErrorMessage message={err} />}
@@ -108,31 +194,12 @@ function Numresults({movies}) {
 }
 
 function Search({query, setQuery}) {
-  const inputEl = useRef(null);
-
-  useKey('Enter', function() {
-    if(document.activeElement === inputEl.current) {
-      return;
-    }
-    
-    inputEl.current.focus();
-    setQuery('');
-  })
-
-  // useEffect(() => {
-  //   const el = document.querySelector('.search');
-  //   console.log(el)
-  //   el.focus();
-  // }, [])
-
-
   return <input
     className="search"
     type="text"
     placeholder="Search movies..."
     value={query}
     onChange={(e) => setQuery(e.target.value)}
-    ref={inputEl}
   />
 }
 
@@ -187,28 +254,6 @@ function MovieDetails({selectedId, onCloseMovie, onAddWatched, watched}) {
 
   const {Title : title, Year : year, Poster : poster, Runtime : runtime, imdbRating, Plot : plot, Released : released, Actors : actors, Director : director, Genre : genre} = movie;
 
-  
-  // if(imdbRating > 8) {
-  //   [isTop, setIsTop] = useState(true);
-  // }
-  // if(imdbRating > 8) {
-  //   return <p>Greatest Ever!</p>
-  // }
-
-  //This will NOT work!
-  //Because the initial state that is set for useState never changes, since data was not fetched, imdbRating was undefined
-  //and the comdition was false inside, the condition inside executes only on component mount.
-  // const [isTop, setIsTop] = useState(imdbRating > 8);
-
-  // const [avgRating, setAvgRating] = useState(0);
-
-  const countRef = useRef(0);
-  useEffect(() => {
-    if(userRating) {
-      countRef.current = countRef.current + 1;
-    }
-  },[userRating]);
-
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: selectedId,
@@ -217,16 +262,11 @@ function MovieDetails({selectedId, onCloseMovie, onAddWatched, watched}) {
       poster,
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(' ').at(0)),
-      userRating,
-      countRatingDecisions : countRef.current 
+      userRating 
     }
     onAddWatched(newWatchedMovie);
-    // setAvgRating(Number(imdbRating))
-    // setAvgRating(avgRating => (avgRating + userRating) / 2)
     onCloseMovie();
   }
-
-  useKey('Escape', onCloseMovie);
 
   useEffect(() => {
     async function getMovieDetails() {
@@ -241,6 +281,19 @@ function MovieDetails({selectedId, onCloseMovie, onAddWatched, watched}) {
   }, [selectedId])
 
   useEffect(() => {
+    function callback(e){
+      if(e.code === 'Escape') {
+        onCloseMovie();
+      }
+    }
+    document.addEventListener('keydown', callback);
+
+    return function() {
+      document.removeEventListener('keydown', callback)
+    }
+  }, [onCloseMovie])
+
+  useEffect(() => {
     if(!title) return;
     document.title = `Movie | ${title}`;
 
@@ -248,15 +301,6 @@ function MovieDetails({selectedId, onCloseMovie, onAddWatched, watched}) {
       document.title = 'usePopcorn';
     }
   }, [title])
-
-
-  // const [isTop, setIsTop] = useState();
-  // useEffect(() => {
-  //   setIsTop(imdbRating > 8);
-  // }, [imdbRating]);
-
-  // const isTop = imdbRating > 8;
-  // console.log(isTop)
 
   return <div className="details">
     {isLoading ? <Loader></Loader> : <>
@@ -273,7 +317,6 @@ function MovieDetails({selectedId, onCloseMovie, onAddWatched, watched}) {
         </p>
       </div>
     </header>
-    {/* <p>{avgRating}</p> */}
     <section>
       <div className="rating">
         {isWatched ? `You rated this movie ${watchedUserRating} ⭐️.` :  <StarRating maxRating={10} size={24} onSetRating={setUserRating}></StarRating>}

@@ -199,3 +199,46 @@ Fixing Race Condition in search:
 Use AbortController to fix bad search (Race condition) and also if AbortError occurs, don't display that error.
 
 If you want to do classical DOM manipulation, do it in Effects.
+
+
+REACT HOOKS:
+
+Hooks are special functions that allow us to hook into react internals. Hooks are API's that allow:
+    1. Creating and accessing state from the fiber tree.
+    2. Registering side effects in fiber tree.
+    3. Manual DOM selection.
+
+There are 2 rules for writing hooks:
+    1. Hooks can only be called at the top level. (Hooks rely on call order)
+    2. Hooks can only br called from react functions.
+
+Ordering among hooks is important because react creates a linked list of hooks. So if any hook violates the top-level
+rule, the linked list will not be able to form and fiber tree will not be able to manage state and memory.
+
+Callback functions can be used inside useState() (Called lazy evaluation). Do not directly call functions inside use state instead pass in
+a callback functions with no arguments which react can execute later. Callback function must be pure.
+
+
+useRef:
+
+    Use ref is a hook which has two primary functions:
+    1. To persist data between renders.
+    2. Store the reference to component.
+
+    UseState and useRef both persist the data across multiple renders but there are a few differences.
+    Updating the state variable causes a component to re-render whereas updating the ref does not re-render.
+    State is immutable whereas ref is not immutable.
+    State is updated asynchronously whereas ref is updated synchronously.
+
+    useRef stores value inside current property. useRef.current 
+
+
+Custom Hooks:
+
+Custom hooks allow us to reuse non visual logic in multiple components. One custom hook should have only one purpose,
+to make it reusable and portable.
+
+Rules of hooks apply to custome hooks too.
+
+Custom hooks are just regualar javascript functions which start with a 'use' like useFetch() and must use another hook
+internally. They can receive any relevant props and return any data.
