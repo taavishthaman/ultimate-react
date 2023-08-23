@@ -1,0 +1,29 @@
+Use Reducer:
+
+    Use Reducer hook is a more complex way of managing state.
+
+    Defining the useReducer hook:
+
+    const [count, dispatch] = useReducer(reducer, 0);
+
+    On the left side, we get a state variable and a dispatch fucntion to dispatch actions.
+    On the right side we pass in a callback function called a reducer and the initial state.
+
+    The callback reducer function:
+
+    function reducer(state, action) {
+        //Here we must perform some action on the current state and return the next state
+        return state + action.payload;
+    }
+
+    Dispatch function:
+    dispatch({type : 'inc', payload : 1});
+
+    type property is used to identify the action and the payload property is used to use payload as a variable.
+
+    Use Reducer hook provides one callback function which is the reducer to manage the state of the related pieces.
+    All you have to do is pass in an object which contains all possible initial related states and then conditionally 
+    update those states. 
+
+    Reducer must be a pure function which returns a new state based on the current state and an action. We must not
+    use the reducer to mutate the state or cause any side effects.
