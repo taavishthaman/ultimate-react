@@ -1,0 +1,14 @@
+.logocontainer {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.company {
+  font-size: 3.2rem;
+  font-style: bold;
+}
+
+.logo {
+  height: 5.2rem;
+}

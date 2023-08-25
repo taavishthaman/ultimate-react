@@ -22,8 +22,25 @@ Use Reducer:
     type property is used to identify the action and the payload property is used to use payload as a variable.
 
     Use Reducer hook provides one callback function which is the reducer to manage the state of the related pieces.
-    All you have to do is pass in an object which contains all possible initial related states and then conditionally 
+    All you have to do is pass in an object which contProviderains all possible initial related states and then conditionally 
     update those states. 
 
     Reducer must be a pure function which returns a new state based on the current state and an action. We must not
     use the reducer to mutate the state or cause any side effects.
+
+
+    React Router:
+    React Router links different URL's to different views(components). These are called Single Page Applications
+    because the app is never reloaded instead everything runs on the same page.
+
+
+Context API:
+
+    Context API is the system to pass data throughout the app without manually passing props down the tree.
+    Allow us to broadcast global state to the entire app.
+
+    Context API has three parts:
+    Provider : Gives all child components access to the value.
+    Value : Data that we want to make available (ususally state and functions).
+    Consumers : All components that read the provided context value.
+
