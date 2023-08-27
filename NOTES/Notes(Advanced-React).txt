@@ -44,3 +44,25 @@ Context API:
     Value : Data that we want to make available (ususally state and functions).
     Consumers : All components that read the provided context value.
 
+
+import { createContext, useContext } from 'react';
+
+//Create the Context
+const PostContext = createContext();
+
+//Wrap the application inside the Context provider and pass the values that need to be accessed.
+<PostContext.Provider values={{
+    state1,
+    state2
+}}>
+    <App/>
+</PostContext.Provider>
+
+//Consume the context value.
+const {state1} = useContext(PostContext);
+
+Once all this is created separate it out into a separate file called a Provider. Also create a custom hook for
+useContext() function since typing it out everytime is quite tedious.
+
+Its important to note that you cannot use API fetching logic inside a reducer since the reducer is a pure function and
+should not deal with outer asynchronous data.
