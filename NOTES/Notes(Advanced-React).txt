@@ -61,8 +61,58 @@ const PostContext = createContext();
 //Consume the context value.
 const {state1} = useContext(PostContext);
 
-Once all this is created separate it out into a separate file called a Provider. Also create a custom hook for
-useContext() function since typing it out everytime is quite tedious.
+    Once all this is created separate it out into a separate file called a Provider. Also create a custom hook for
+    useContext() function since typing it out everytime is quite tedious.
 
-Its important to note that you cannot use API fetching logic inside a reducer since the reducer is a pure function and
-should not deal with outer asynchronous data.
+    Its important to note that you cannot use API fetching logic inside a reducer since the reducer is a pure function and
+    should not deal with outer asynchronous data.
+
+Performance Optimization Tools:
+
+1. Prevent Wasted Renders
+    memo
+    useMemo
+    useCallback
+    Passing elements as children or regular props
+
+2. Improve App Speed / Responsiveness
+    useMemo
+    useCallback
+    useTransition
+
+3. Reduce Bundle Size
+    Using fewer 3rd party packages
+    Code splitting and lazy loading
+
+A component re-renders in 3 cases:
+    1. State Changes
+    2. Context Changes
+    3. Component Re-renders
+
+    A wasted render is when a re-render operation occurs but does not produce any change in the DOM. This can make
+    the application feel laggy and unresponsive.
+
+    One surprising optimisation technique is that if a component is slow and is hogging the UI. Separate it out and pass
+    it in the parent component as a children (Component composition or props). This will not re-render the slow component
+    and vastly improve performance.
+
+    memo : Used to memoize components.
+    useMemo : Used to memoize objects.
+    useCallback : Used to memoize functions.
+
+    The memo function does not re-render a component if the props are same. This means that if a parent component re-renders
+    but it stil passes the same props to a child component which is using memo, that child component will not re-render.
+
+    useMemo and useCallback functions are necessary because objects and functions in javascript are not stable. That means
+    on every component re-render the object and function even if it looks same, has the same code will still be different.
+
+    So if the component re-renders, the entire subtree re-renders which cause slowdown. 
+
+    So we use useMemo to memoize objects and useCallback to memoize functions.
+
+    DO NOT use objects and arrays in the dependancy array. Its because everytime a re-render occurs react will see the 
+    same object as different because of how javascript works and the hook will be fired unnecessarily.
+
+
+REDUX:
+    Redux is conceptually similar to using useReducer + Context API.

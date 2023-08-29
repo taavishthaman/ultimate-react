@@ -1,6 +1,7 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useState, createContext, useContext, memo } from "react";
 import {PostProvider, usePosts} from "./PostProvider";
 import { faker } from "@faker-js/faker";
+import Test from '../src/Test';
 
 function createRandomPost() {
   return {
@@ -75,15 +76,14 @@ function Results() {
   return <p>🚀 {posts.length} atomic posts found</p>;
 }
 
-function Main() {
-
+const Main = memo(function Main() {
   return (
     <main>
       <FormAddPost />
       <Posts/>
     </main>
   );
-}
+})
 
 function Posts() {
   return (
@@ -128,14 +128,16 @@ function List() {
   const {posts} = usePosts();
 
   return (
-    <ul>
-      {posts.map((post, i) => (
-        <li key={i}>
-          <h3>{post.title}</h3>
-          <p>{post.body}</p>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul>
+        {posts.map((post, i) => (
+          <li key={i}>
+            <h3>{post.title}</h3>
+            <p>{post.body}</p>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 
