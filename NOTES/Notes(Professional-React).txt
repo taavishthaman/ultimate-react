@@ -1,0 +1,1 @@
+Tailwind is mobile first since it uses min-width internally. So the default classes are for mobile.

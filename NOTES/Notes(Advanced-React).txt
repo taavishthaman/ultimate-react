@@ -116,3 +116,7 @@ A component re-renders in 3 cases:
 
 REDUX:
     Redux is conceptually similar to using useReducer + Context API.
+
+    In redux, middleware is where you do API calls. Redux Thunk is a middleware.
+
+    Redux Toolkit is a modern redux solution that uses a lot less boilerplate and automatically sets up redux devtools.
