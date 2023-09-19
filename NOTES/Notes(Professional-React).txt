@@ -1,1 +1,25 @@
 Tailwind is mobile first since it uses min-width internally. So the default classes are for mobile.
+
+React Query.
+    Fetches and caches data, so do not need to fetch again and again. Also keeps apps in synch with server.
+
+React Patterns:
+
+1. Render Props Pattern : The render props pattern passes in a prop called render which is a function which explains what to render
+    and how to render it. Essentially the callbakc function used inside a map function to render a list, pass that callback function
+    to the component as a render prop and use that function inside the map function.
+
+2. Higher order components Pattren : A higher order component is a component which takes in another component as a prop and returns an
+    enhanced or a better version of that component.
+
+3. Compound Component Pattern: Compound components are a set of related components which together achieve a common and a useful task.
+    Used in modal windows, pagination, tables etc. Its used without passing in props to the component which can cause prop explosion
+    like most of these npm packages with 5 million props. Internally it uses Context and micro components attached as functions to the
+    parent component.
+
+
+React Portal: React Portal is a feature that allows us to render an element outside the parent component's DOM structure while still
+    keeping the element in the original position in the component tree. Used for Modal Windows, Tooltips, Menus etc. This is done
+    for the sake of reusability because what if a modal is used in a page which has overflow hidden property set. Then the modal will
+    be cut off. Rendering it like this makes sure it operates on the high level of DOM tree and dosen't get affected by CSS.
+
