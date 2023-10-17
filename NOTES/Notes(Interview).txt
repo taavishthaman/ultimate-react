@@ -1,0 +1,78 @@
+Components, Instances and React Elements
+
+    A component is a blueprint which defines the logic of a component like a class.
+    A component instance is actual manifestation of the component, like an object.
+    An element is a special object of the type react element which is how component exists, this element is what is further 
+    converted into a DOM element and pained on screen.
+
+How Rendering works:
+
+    First off an initial render or a state change in the application triggers the render phase. Renders do not happen immediately
+    but is scheduled when the javascript engine has some free time. There is also batching of multiple set state calls in event
+    handlers.
+
+    On the first render react will convert the entire component tree to a react element tree. This react element tree is
+    called the Virtual DOM. Its cheap and fast to create these trees. Rendering a component will cause all its children
+    to be re-rendered as well (no matter if the props changed or not). Necessary because react dosen't know whether the
+    children will be affected.
+
+    Now the new virtual DOM will be reconciled with the previous fiber tree to create a new fiber tree which will be used
+    to render to the DOM. 
+
+    Reconciliation is the process of deciding which DOM elements actually need to be inserted, deleted or updated in order
+    to reflect the latest state changes. This is done by the reconciler which can be called the heart of React. The reconciler
+    has the name of "Fiber".
+
+    The Fiber tree does not get recreated on every render instead it gets modified. The fiber tree is represented using a
+    multilevel linked list.
+
+The commit phase:
+    In this phase a list of effects(created in previous render phase) which is then used to write to the DOM. In this phase 
+    the DOM actually gets repainted. Commit phase is synchronous, it cannot be interrupted. Commit phase is handled by 
+    ReactDOM and not React.
+
+Diffing:
+    The diffing algorithms makes 2 assumptions:
+    1. Two elements of different types will produce different trees.
+    2. Elements with a stable key prop stay the same across renders.
+
+    The key prop is a special prop that we use to tell the diffing algorithm that an element is unique.
+    It allows react to distinguish between multiple instances of the same component type.
+
+    1. Stable Keys should be used in lists. Because if a new element gets inserted somewhere in list, the other elements will
+    be destroyed which will be bad for performance. Providing a stable key on the other hand will tell react to not recreate
+    that node.
+
+    2. Changing Keys should be used to reset state. If we don't want the state to be persisted, use a unique key to reset the
+    state.
+
+Types of Logic in react components:
+
+    1. Render Logic: Code that lives on the top level of component function and participates in describing how the component
+    view looks like. Its all the code that is executed when a component renders.
+
+    2. Event Handler Functions: A function that is executed as a consequence of an event. eg HTTP requests, writing to DOM,
+    mutating external variables.
+
+    A side effect is a dependancy or a modification of any data outside the function scope.
+    Pure functions have no side effects.
+ 
+    Components must be pure functions when it comes to render logic. Instead side effects should be done in event handler
+    functions and effects.
+
+State Update Batching:
+    If there are multiple state variables being updated in an event handler function, they are updated in a batch in order
+    to remove wasted renders. Updating state is asynchronous as we cannot immediately log the changed state variable.
+
+    Before react 18, in timeout, promises and native DOM events, automatic batching did not exist. It happened one by one.
+    ReactDOM.flushSync() is used to prevent batching in rare scenarios when its not required.
+
+Events in React:
+If you add a event handler on a component then the equivalent javascript event handler actually gets added on the root
+element and not on the element itself. Capturing and Bubbling phases work in the same way.
+
+Synthetic Event is a wrapper over the standard DOM events.
+
+Use Effect fires after the component has rendered and not while it is rendering unlike console.log. 
+Side effects can be created inside event handlers and effects (useEffect).
+
