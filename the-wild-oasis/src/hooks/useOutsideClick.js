@@ -12,7 +12,8 @@ export function useOutsideClick(handler, listenCapturing = true) {
       }
       //Detect events on capturing phase
       document.addEventListener("click", handleClick, listenCapturing);
-      return () => document.removeEventListener("click", handleClick);
+      return () =>
+        document.removeEventListener("click", handleClick, listenCapturing);
     },
     [handler, listenCapturing]
   );

@@ -3,7 +3,7 @@ Components, Instances and React Elements
     A component is a blueprint which defines the logic of a component like a class.
     A component instance is actual manifestation of the component, like an object.
     An element is a special object of the type react element which is how component exists, this element is what is further 
-    converted into a DOM element and pained on screen.
+    converted into a DOM element and painted on screen.
 
 How Rendering works:
 
